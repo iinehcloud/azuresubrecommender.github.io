@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Subscription Type Selector</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1, h2, h3 {
+            color: #0078d4;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #0078d4;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f9ff;
+        }
+        
+        tr:hover {
+            background-color: #e6f3ff;
+        }
+        
+        .requirements-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .requirement-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .checkbox-container input {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .result-container {
+            background-color: #e6f3ff;
+            border-left: 5px solid #0078d4;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .reason {
+            font-size: 0.9em;
+            color: #555;
+            margin-left: 28px;
+            margin-top: 5px;
+            padding-left: 10px;
+            border-left: 2px solid #0078d4;
+        }
+        
+        button {
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            background-color: #006cc1;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.8em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Azure Subscription Type Selector</h1>
+    
+    <div class="container">
+        <h2>Azure Subscription Types Comparison</h2>
+        <table id="subscription-table">
+            <thead>
+                <tr>
+                    <th>Subscription Type</th>
+                    <th>Description</th>
+                    <th>Billing</th>
+                    <th>Management</th>
+                    <th>Best For</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pay-As-You-Go (PAYG)</td>
+                    <td>Pay for what you use with no upfront costs</td>
+                    <td>Monthly billing, credit card or invoice</td>
+                    <td>Individual subscription</td>
+                    <td>Small businesses, startups, individual projects</td>
+                </tr>
+                <tr>
+                    <td>Enterprise Agreement (EA)</td>
+                    <td>Volume licensing program with committed Azure spend</td>
+                    <td>Annual commitment, monthly/quarterly billing</td>
+                    <td>Department/Account structure</td>
+                    <td>Large enterprises with predictable spend</td>
+                </tr>
+                <tr>
+                    <td>Microsoft Customer Agreement (MCA)</td>
+                    <td>Modern commerce experience with improved cost management</td>
+                    <td>Monthly billing, flexible payment options</td>
+                    <td>Billing profiles and invoice sections</td>
+                    <td>Organizations transitioning from EA or needing granular billing</td>
+                </tr>
+                <tr>
+                    <td>Cloud Solution Provider (CSP)</td>
+                    <td>Purchased through Microsoft partners</td>
+                    <td>Managed by partner</td>
+                    <td>Partner delegated administration</td>
+                    <td>Businesses wanting managed services with support</td>
+                </tr>
+                <tr>
+                    <td>Free/Student</td>
+                    <td>Limited credits for learning</td>
+                    <td>Free credits for a limited time</td>
+                    <td>Individual subscription</td>
+                    <td>Students, learning, testing</td>
+                </tr>
+                <tr>
+                    <td>Visual Studio Subscription</td>
+                    <td>Monthly credits included with VS subscription</td>
+                    <td>Monthly credits, additional usage charged</td>
+                    <td>Individual subscription</td>
+                    <td>Developers and testing environments</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="container">
+        <h2>Selection Criteria</h2>
+        <p>Select the factors that are important for your organization:</p>
+        
+        <div class="requirements-section">
+            <div class="requirement-card">
+                <h3>Organization Size</h3>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="size-small" name="size" value="small">
+                    <label for="size-small">Small Business (< 50 employees)</label>
+                </div>
+                <div class="reason">Smaller organizations typically start with PAYG or CSP for simplicity.</div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="size-medium" name="size" value="medium">
+                    <label for="size-medium">Medium Business (50-500 employees)</label>
+                </div>
+                <div class="reason">Medium businesses might benefit from MCA or CSP for better cost management.</div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="size-enterprise" name="size" value="enterprise">
+                    <label for="size-enterprise">Enterprise (500+ employees)</label>
+                </div>
+                <div class="reason">Enterprises typically benefit from EA or MCA for volume discounts and management.</div>
+            </div>
+            
+            <div class="requirement-card">
+                <h3>Spending Pattern</h3>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="spend-variable" name="spend" value="variable">
+                    <label for="spend-variable">Variable/Unpredictable Spending</label>
+                </div>
+                <div class="reason">PAYG offers flexibility with no commitments for variable usage.</div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="spend-predictable" name="spend" value="predictable">
+                    <label for="spend-predictable">Predictable Annual Spending</label>
+                </div>
+                <div class="reason">EA or MCA provide better rates with committed spending.</div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="spend-high" name="spend" value="high">
+                    <label for="spend-high">High Volume (>$15K/month)</label>
+                </div>
+                <div class="reason">EA provides significant discounts for high-volume customers.</div>
+            </div>
+            
+            <div class="requirement-card">
+                <h3>Management Needs</h3>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="mgmt-simple" name="mgmt" value="simple">
+                    <label for="mgmt-simple">Simple, Minimal Management</label>
+                </div>
+                <div class="reason">PAYG offers straightforward management for simple needs.</div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="mgmt-dept" name="mgmt" value="dept">
+                    <label for="mgmt-dept">Department/Cost Center Billing</label>
+                </div>
+                <div class="reason">EA and MCA provide department and cost center structures.</div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="mgmt-partner" name="mgmt" value="partner">
+                    <label for="mgmt-partner">Partner Managed</label>
+                </div>
+                <div class="reason">CSP is ideal when working through a Microsoft partner.</div>
+            </div>
+            
+            <div class="requirement-card">
+                <h3>Purpose</h3>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="purpose-prod" name="purpose" value="prod">
+                    <label for="purpose-prod">Production Workloads</label>
+                </div>
+                <div class="reason">All subscription types support production, but EA/MCA offer better governance.</div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="purpose-dev" name="purpose" value="dev">
+                    <label for="purpose-dev">Development/Testing</label>
+                </div>
+                <div class="reason">Visual Studio subscriptions are ideal for development environments.</div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="purpose-learn" name="purpose" value="learn">
+                    <label for="purpose-learn">Learning/Evaluation</label>
+                </div>
+                <div class="reason">Free/Student subscriptions are perfect for learning Azure.</div>
+            </div>
+            
+            <div class="requirement-card">
+                <h3>Procurement</h3>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="proc-card" name="proc" value="card">
+                    <label for="proc-card">Credit Card Payment</label>
+                </div>
+                <div class="reason">PAYG and MCA support credit card payments.</div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="proc-invoice" name="proc" value="invoice">
+                    <label for="proc-invoice">Invoice-Based Payment</label>
+                </div>
+                <div class="reason">EA, MCA, and CSP support invoice-based payment.</div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="proc-existing" name="proc" value="existing">
+                    <label for="proc-existing">Existing Microsoft Volume Licensing</label>
+                </div>
+                <div class="reason">EA is integrated with existing Microsoft volume licensing.</div>
+            </div>
+            
+            <div class="requirement-card">
+                <h3>Support Requirements</h3>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="support-basic" name="support" value="basic">
+                    <label for="support-basic">Basic Support</label>
+                </div>
+                <div class="reason">All subscriptions include basic support.</div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="support-premium" name="support" value="premium">
+                    <label for="support-premium">Premium/Enterprise Support</label>
+                </div>
+                <div class="reason">EA typically includes better support options.</div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="support-managed" name="support" value="managed">
+                    <label for="support-managed">Managed Services from Partner</label>
+                </div>
+                <div class="reason">CSP includes partner-managed services and support.</div>
+            </div>
+        </div>
+        
+        <button id="analyze-btn">Analyze Requirements</button>
+    </div>
+    
+    <div id="result-container" class="container result-container hidden">
+        <h2>Recommended Subscription Type</h2>
+        <div id="recommendation-result"></div>
+        <div id="reasoning"></div>
+    </div>
+    
+    <div class="footer">
+        <p>This tool provides general guidance only. Contact Microsoft or an authorized partner for specific recommendations.</p>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure only one checkbox is selected per category
+            const categories = ['size', 'spend', 'mgmt', 'purpose', 'proc', 'support'];
+            
+            categories.forEach(category => {
+                const checkboxes = document.querySelectorAll(`input[name="${category}"]`);
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            checkboxes.forEach(cb => {
+                                if (cb !== this) cb.checked = false;
+                            });
+                        }
+                    });
+                });
+            });
+            
+            // Analyze button click handler
+            document.getElementById('analyze-btn').addEventListener('click', analyzeRequirements);
+            
+            function analyzeRequirements() {
+                // Reset previous results
+                const resultContainer = document.getElementById('result-container');
+                const recommendationResult = document.getElementById('recommendation-result');
+                const reasoningElement = document.getElementById('reasoning');
+                
+                // Collect selected options
+                const selectedOptions = {};
+                categories.forEach(category => {
+                    const selected = document.querySelector(`input[name="${category}"]:checked`);
+                    if (selected) {
+                        selectedOptions[category] = selected.value;
+                    }
+                });
+                
+                // Subscription scoring system
+                const subscriptions = {
+                    'PAYG': { score: 0, reasons: [] },
+                    'EA': { score: 0, reasons: [] },
+                    'MCA': { score: 0, reasons: [] },
+                    'CSP': { score: 0, reasons: [] },
+                    'Free/Student': { score: 0, reasons: [] },
+                    'Visual Studio': { score: 0, reasons: [] }
+                };
+                
+                // Score based on organization size
+                if (selectedOptions.size === 'small') {
+                    subscriptions['PAYG'].score += 3;
+                    subscriptions['PAYG'].reasons.push('PAYG is ideal for small businesses with simple needs');
+                    subscriptions['CSP'].score += 2;
+                    subscriptions['CSP'].reasons.push('CSP provides managed services which can benefit small teams');
+                    subscriptions['Free/Student'].score += 1;
+                    subscriptions['Free/Student'].reasons.push('Free tier is good for very small projects or learning');
+                } else if (selectedOptions.size === 'medium') {
+                    subscriptions['MCA'].score += 3;
+                    subscriptions['MCA'].reasons.push('MCA offers good balance of management and flexibility for medium businesses');
+                    subscriptions['CSP'].score += 2;
+                    subscriptions['CSP'].reasons.push('CSP provides valuable partner support for medium organizations');
+                    subscriptions['PAYG'].score += 1;
+                    subscriptions['PAYG'].reasons.push('PAYG can work for medium businesses with simple needs');
+                } else if (selectedOptions.size === 'enterprise') {
+                    subscriptions['EA'].score += 3;
+                    subscriptions['EA'].reasons.push('EA is designed for enterprise-scale organizations');
+                    subscriptions['MCA'].score += 2;
+                    subscriptions['MCA'].reasons.push('MCA offers modern commerce experience for enterprises');
+                }
+                
+                // Score based on spending pattern
+                if (selectedOptions.spend === 'variable') {
+                    subscriptions['PAYG'].score += 3;
+                    subscriptions['PAYG'].reasons.push('PAYG is ideal for variable spending with no commitments');
+                    subscriptions['CSP'].score += 2;
+                    subscriptions['CSP'].reasons.push('CSP offers flexibility with partner support');
+                } else if (selectedOptions.spend === 'predictable') {
+                    subscriptions['EA'].score += 3;
+                    subscriptions['EA'].reasons.push('EA provides better rates with annual commitments');
+                    subscriptions['MCA'].score += 2;
+                    subscriptions['MCA'].reasons.push('MCA offers favorable rates for predictable spending');
+                } else if (selectedOptions.spend === 'high') {
+                    subscriptions['EA'].score += 3;
+                    subscriptions['EA'].reasons.push('EA offers significant discounts for high-volume customers');
+                    subscriptions['MCA'].score += 2;
+                    subscriptions['MCA'].reasons.push('MCA provides good rates for high-volume usage');
+                }
+                
+                // Score based on management needs
+                if (selectedOptions.mgmt === 'simple') {
+                    subscriptions['PAYG'].score += 3;
+                    subscriptions['PAYG'].reasons.push('PAYG offers simple management with minimal overhead');
+                    subscriptions['Free/Student'].score += 2;
+                    subscriptions['Free/Student'].reasons.push('Free/Student options have minimal management requirements');
+                    subscriptions['Visual Studio'].score += 2;
+                    subscriptions['Visual Studio'].reasons.push('Visual Studio subscriptions are simple to manage');
+                } else if (selectedOptions.mgmt === 'dept') {
+                    subscriptions['EA'].score += 3;
+                    subscriptions['EA'].reasons.push('EA provides robust department/account structure');
+                    subscriptions['MCA'].score += 3;
+                    subscriptions['MCA'].reasons.push('MCA offers billing profiles and invoice sections for granular management');
+                } else if (selectedOptions.mgmt === 'partner') {
+                    subscriptions['CSP'].score += 3;
+                    subscriptions['CSP'].reasons.push('CSP is designed for partner-managed subscriptions');
+                }
+                
+                // Score based on purpose
+                if (selectedOptions.purpose === 'prod') {
+                    subscriptions['EA'].score += 2;
+                    subscriptions['EA'].reasons.push('EA provides enterprise-grade governance for production');
+                    subscriptions['MCA'].score += 2;
+                    subscriptions['MCA'].reasons.push('MCA offers robust management for production workloads');
+                    subscriptions['PAYG'].score += 1;
+                    subscriptions['PAYG'].reasons.push('PAYG works for production with simpler needs');
+                    subscriptions['CSP'].score += 1;
+                    subscriptions['CSP'].reasons.push('CSP offers managed production environments');
+                } else if (selectedOptions.purpose === 'dev') {
+                    subscriptions['Visual Studio'].score += 3;
+                    subscriptions['Visual Studio'].reasons.push('Visual Studio subscriptions are designed for development environments');
+                    subscriptions['PAYG'].score += 1;
+                    subscriptions['PAYG'].reasons.push('PAYG offers flexibility for development environments');
+                } else if (selectedOptions.purpose === 'learn') {
+                    subscriptions['Free/Student'].score += 3;
+                    subscriptions['Free/Student'].reasons.push('Free/Student subscriptions are ideal for learning Azure');
+                    subscriptions['Visual Studio'].score += 2;
+                    subscriptions['Visual Studio'].reasons.push('Visual Studio subscriptions include Azure credits for learning');
+                }
+                
+                // Score based on procurement method
+                if (selectedOptions.proc === 'card') {
+                    subscriptions['PAYG'].score += 3;
+                    subscriptions['PAYG'].reasons.push('PAYG supports credit card payments');
+                    subscriptions['MCA'].score += 2;
+                    subscriptions['MCA'].reasons.push('MCA supports credit card payments');
+                    subscriptions['Free/Student'].score += 1;
+                    subscriptions['Free/Student'].reasons.push('Free/Student tiers use credit cards for verification');
+                } else if (selectedOptions.proc === 'invoice') {
+                    subscriptions['EA'].score += 3;
+                    subscriptions['EA'].reasons.push('EA is designed for invoice-based payment');
+                    subscriptions['MCA'].score += 3;
+                    subscriptions['MCA'].reasons.push('MCA supports invoice-based payment');
+                    subscriptions['CSP'].score += 2;
+                    subscriptions['CSP'].reasons.push('CSP typically uses invoice-based billing through partner');
+                } else if (selectedOptions.proc === 'existing') {
+                    subscriptions['EA'].score += 3;
+                    subscriptions['EA'].reasons.push('EA integrates with existing Microsoft volume licensing');
+                }
+                
+                // Score based on support requirements
+                if (selectedOptions.support === 'basic') {
+                    // All options offer basic support, so no score change
+                } else if (selectedOptions.support === 'premium') {
+                    subscriptions['EA'].score += 2;
+                    subscriptions['EA'].reasons.push('EA typically includes better support options');
+                    subscriptions['MCA'].score += 1;
+                    subscriptions['MCA'].reasons.push('MCA can include premium support options');
+                } else if (selectedOptions.support === 'managed') {
+                    subscriptions['CSP'].score += 3;
+                    subscriptions['CSP'].reasons.push('CSP includes partner-managed services and support');
+                }
+                
+                // Find highest scoring subscription
+                let highestScore = 0;
+                let recommendedSub = '';
+                
+                for (const [sub, details] of Object.entries(subscriptions)) {
+                    if (details.score > highestScore) {
+                        highestScore = details.score;
+                        recommendedSub = sub;
+                    }
+                }
+                
+                // Show results
+                if (recommendedSub) {
+                    resultContainer.classList.remove('hidden');
+                    recommendationResult.innerHTML = `<h3>${recommendedSub}</h3>`;
+                    
+                    // Display reasoning
+                    let reasoningHtml = '<h3>Why this recommendation:</h3><ul>';
+                    subscriptions[recommendedSub].reasons.forEach(reason => {
+                        reasoningHtml += `<li>${reason}</li>`;
+                    });
+                    reasoningHtml += '</ul>';
+                    
+                    // Add second best option if score is close
+                    let secondBest = '';
+                    let secondScore = 0;
+                    
+                    for (const [sub, details] of Object.entries(subscriptions)) {
+                        if (sub !== recommendedSub && details.score > secondScore) {
+                            secondScore = details.score;
+                            secondBest = sub;
+                        }
+                    }
+                    
+                    if (secondBest && (highestScore - secondScore) <= 2) {
+                        reasoningHtml += `<h3>Alternative option: ${secondBest}</h3><ul>`;
+                        subscriptions[secondBest].reasons.forEach(reason => {
+                            reasoningHtml += `<li>${reason}</li>`;
+                        });
+                        reasoningHtml += '</ul>';
+                    }
+                    
+                    reasoningElement.innerHTML = reasoningHtml;
+                } else {
+                    resultContainer.classList.remove('hidden');
+                    recommendationResult.innerHTML = '<p>Please select at least one criteria to get a recommendation.</p>';
+                    reasoningElement.innerHTML = '';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
